@@ -2,11 +2,11 @@ version: '3'
 
 services:
   app:
-    container_name: gin
+    container_name: go-api-boilerplate
     build:
-      context: .
-      dockerfile: docker/Dockerfile
+      context: ../
+      dockerfile: Dockerfile
     volumes:
-      - .:/go/src/app
+      - ../:/go/src/app
     ports:
       - 3001:3001
