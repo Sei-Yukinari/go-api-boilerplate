@@ -1,0 +1,9 @@
+# Gopkg.toml
+
+[[constraint]]
+  name = "github.com/gin-gonic/gin"
+  version = "1.5.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true

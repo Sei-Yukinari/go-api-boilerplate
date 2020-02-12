@@ -1,18 +1,25 @@
 # Variables
-COMPOSE_COMMAND := docker-compose -f ./docker/docker-compose.yml
+PROJECT = go-api-boilerplate
+COMPOSE_COMMAND := docker-compose
 
 ### Start selected environment
 start:
-	${COMPOSE_COMMAND} up -d
+	${COMPOSE_COMMAND} -p $(PROJECT) up -d
 
 ### Build and Start selected environment
 restart:
-	${COMPOSE_COMMAND} up -d --build
+	${COMPOSE_COMMAND} -p $(PROJECT) kill \
+ && ${COMPOSE_COMMAND} -p $(PROJECT) rm -f \
+ && ${COMPOSE_COMMAND} -p $(PROJECT) up -d --build
 
 ### Shut down selected environment
 stop:
-	${COMPOSE_COMMAND}  down -v
+	${COMPOSE_COMMAND} -p $(PROJECT) kill \
+ && ${COMPOSE_COMMAND} -p $(PROJECT) rm -f \
+
+ps: ## List containers : ## make ps
+	${COMPOSE_COMMAND} -p $(PROJECT) ps
 
 ### Show logs from selected environment
 logs:
-	${COMPOSE_COMMAND} logs -f
+	${COMPOSE_COMMAND} -p $(PROJECT) logs -f
