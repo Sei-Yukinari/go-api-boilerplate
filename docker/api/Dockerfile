@@ -22,8 +22,8 @@ RUN apk update \
   # Debugger
   && go get -u github.com/derekparker/delve/cmd/dlv \
   && go build -o /go/bin/dlv github.com/go-delve/delve/cmd/dlv \
-  # create main.go
+  # create entry point
   && go build -gcflags "-N -l" -o /server main.go
 
 # exec
-CMD ["dlv", "--listen=:2345", "--headless=true", "--api-version=2", "exec", "/server"]
+CMD ["./server"]
