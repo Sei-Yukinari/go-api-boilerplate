@@ -4,13 +4,14 @@
 FROM golang:1.13.1-alpine
 
 # Copy Gopkg.toml in advance so that `dev ensure` can be executed
-COPY src/api /go/src/api/
+COPY ./src/api /go/src/api/
 
 # `dep ensure` excute directory
 WORKDIR /go/src/api/
 
 # package install
-RUN apk update \
+RUN set -x \
+  && apk update \
   && apk add --no-cache git \
   # Web Framework
   && go get -u github.com/codegangsta/gin \
