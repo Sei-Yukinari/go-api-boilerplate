@@ -23,8 +23,8 @@ RUN set -x \
   # Debugger
   && go get -u github.com/derekparker/delve/cmd/dlv \
   && go build -o /go/bin/dlv github.com/go-delve/delve/cmd/dlv \
-  # create entry point
+  # create main.go
   && go build -gcflags "-N -l" -o /server main.go
 
 # exec
-CMD ["./server"]
+CMD ["dlv", "--listen=:2345", "--headless=true", "--api-version=2", "exec", "/server"]
