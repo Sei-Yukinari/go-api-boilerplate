@@ -1,6 +1,6 @@
 # Variables
 PROJECT = go-api-boilerplate
-COMPOSE_COMMAND := docker-compose -f ./docker/docker-compose.yml
+COMPOSE_COMMAND := docker-compose -f ./docker-compose.yml
 
 ### Start selected environment
 start:

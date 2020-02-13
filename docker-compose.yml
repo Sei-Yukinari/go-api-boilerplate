@@ -9,9 +9,9 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./docker/api/Dockerfile
+      dockerfile: docker/api/Dockerfile
     volumes:
-      - ../src/api:/go/src/api
+      - ./src/api:/go/src/api
       - vendor:/go/src/api/vendor
     command: realize start --run
     ports:
