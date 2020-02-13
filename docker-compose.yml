@@ -21,3 +21,20 @@ services:
       - apparmor:unconfined
     cap_add:
       - SYS_PTRACE
+    links:
+      - db
+  db:
+    build: ./docker/db/Dockerfile
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: sample_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3314:3306"
+    volumes:
+      - ./docker/db/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/db/conf.d:/etc/mysql/conf.d
+      - ./log/db:/var/log/mysql
