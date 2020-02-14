@@ -23,8 +23,7 @@ const configPath string = "config/default.toml"
 
 func Load() Config {
 	var config Config
-	_, err := toml.DecodeFile(configPath, &config)
-	if err != nil {
+	if _, err := toml.DecodeFile(configPath, &config); err != nil {
 		panic(err)
 	}
 	return config
