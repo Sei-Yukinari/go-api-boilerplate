@@ -3,12 +3,12 @@
 # base image
 FROM golang:1.13.1-alpine
 
-# Copy Gopkg.toml in advance so that `dev ensure` can be executed
-COPY ./src/api /go/src/api/
-
 # `dep ensure` excute directory
 WORKDIR /go/src/api/
 
+# Copy Gopkg.toml in advance so that `dev ensure` can be executed
+COPY Gopkg.toml Gopkg.lock ./
+RUN dep ensure -v -vendor-only=true
 # package install
 RUN set -x \
   && apk update \
@@ -17,7 +17,7 @@ RUN set -x \
   && go get -u github.com/codegangsta/gin \
   # Package Manager
   && go get -u github.com/golang/dep/cmd/dep \
-  && dep ensure \
+  && dep ensure -v -vendor-only=true \
   # Hot Reload
   && go get -u github.com/oxequa/realize \
   # Debugger

@@ -17,6 +17,10 @@ stop:
 	${COMPOSE_COMMAND} -p $(PROJECT) kill \
  && ${COMPOSE_COMMAND} -p $(PROJECT) rm -f \
 
+### Dell selected environment
+down:
+	${COMPOSE_COMMAND} -p $(PROJECT) down
+
 ps: ## List containers : ## make ps
 	${COMPOSE_COMMAND} -p $(PROJECT) ps
 
