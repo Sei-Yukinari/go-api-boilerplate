@@ -10,6 +10,22 @@
   version = "v0.3.1"
 
 [[projects]]
+  digest = "1:2de50460dd6b7b36cb01f2d74f7e1c156b8adbf94f87762dbcb32e537e064246"
+  name = "github.com/caarlos0/env"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b1dce163743c66634eeef5988da14b031b1aa8f6"
+  version = "v6.1.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0ae01c9e122d522c729f55986d052983d7e813f3e82a32b887374906a286e7de"
+  name = "github.com/fvbock/endless"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "447134032cb6a86814f570257390a379982dfc61"
+
+[[projects]]
   digest = "1:3ee1d175a75b911a659fbd860060874c4f503e793c5870d13e5a0ede529a63cf"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
@@ -48,6 +64,14 @@
   pruneopts = "UT"
   revision = "f87b1403479a348651dbf5f07f5cc6e5fcf07008"
   version = "v0.17.0"
+
+[[projects]]
+  digest = "1:a3af33fd30536d9c5a7b6ad542390919e57c1125097a194c7b3d9904109a0611"
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "17ef3dd9d98b69acec3e85878995ada9533a9370"
+  version = "v1.5.0"
 
 [[projects]]
   digest = "1:318f1c959a8a740366fce4b1e1eb2fd914036b4af58fbd0a003349b305f118ad"
@@ -134,7 +158,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/BurntSushi/toml",
+    "github.com/caarlos0/env",
+    "github.com/fvbock/endless",
     "github.com/gin-gonic/gin",
+    "github.com/go-sql-driver/mysql",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

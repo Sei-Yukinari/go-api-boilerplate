@@ -7,8 +7,9 @@ FROM golang:1.13.1-alpine
 WORKDIR /go/src/api/
 
 # Copy Gopkg.toml in advance so that `dev ensure` can be executed
-COPY Gopkg.toml Gopkg.lock ./
-RUN dep ensure -v -vendor-only=true
+#COPY Gopkg.toml Gopkg.lock ./
+COPY src/api /go/src/api/
+
 # package install
 RUN set -x \
   && apk update \

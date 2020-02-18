@@ -1,7 +1,5 @@
 version: '3'
 
-# Deletes under vendor when mounting, Specify another volume
-# If you edit Gopkg.toml, also delete the vendor volume and rebuild(`dep ensure`) the image
 volumes:
   vendor:
 
@@ -14,6 +12,13 @@ services:
       - ./src/api:/go/src/api
       - vendor:/go/src/api/vendor
     command: realize start --run
+    environment:
+      DB_DRIVER: mysql
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: sample_db
     ports:
       - 3001:3001
       - 2345:2345
@@ -24,7 +29,9 @@ services:
     links:
       - db
   db:
-    build: ./docker/db/Dockerfile
+    build:
+      context: .
+      dockerfile: docker/db/Dockerfile
     image: mysql:5.7
     restart: always
     environment:

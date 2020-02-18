@@ -1,23 +1,28 @@
 package http
 
 import (
+	"api/infrastracture/db"
+	"api/infrastracture/log"
+	"api/infrastracture/router"
 	"fmt"
 
-	"api/config"
+	"github.com/fvbock/endless"
 
-	"github.com/gin-gonic/gin"
+	"api/config"
+	"api/infrastracture/env"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func StartHttpServer() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "hoge",
-		})
-	})
 	c := config.Load()
-	if err := r.Run(":" + c.Server.Port); err != nil {
+	env.Load()
+	sqlHandler, err := db.NewSQLHandler()
+	if err != nil {
 		fmt.Printf("Error : [%s]", err)
 	}
-
+	logger := log.NewLogger()
+	if err := endless.ListenAndServe(":"+c.Server.Port, router.Handler(sqlHandler, logger)); err != nil {
+		fmt.Printf("Error : [%s]", err)
+	}
 }
