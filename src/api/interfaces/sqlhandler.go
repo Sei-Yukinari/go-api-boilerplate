@@ -1,29 +1,14 @@
 package interfaces
 
-// A SQLHandler belong to the interface layer.
+import "github.com/jinzhu/gorm"
+
 type SQLHandler interface {
-	Begin() (Tx, error)
-	Query(string, ...interface{}) (Row, error)
-	Exec(string, ...interface{}) (Result, error)
-}
-
-// A Tx belong to the interface layer.
-type Tx interface {
-	Commit() error
-	Rollback() error
-	Exec(string, ...interface{}) (Result, error)
-}
-
-// A Result belong to the interface layer.
-type Result interface {
-	LastInsertId() (int64, error)
-	RowsAffected() (int64, error)
-}
-
-// A Row belong to the interface layer.
-type Row interface {
-	Scan(...interface{}) error
-	Next() bool
-	Close() error
-	Err() error
+	Exec(string, ...interface{}) *gorm.DB
+	Find(interface{}, ...interface{}) *gorm.DB
+	First(interface{}, ...interface{}) *gorm.DB
+	Raw(string, ...interface{}) *gorm.DB
+	Create(interface{}) *gorm.DB
+	Save(interface{}) *gorm.DB
+	Delete(interface{}) *gorm.DB
+	Where(interface{}, ...interface{}) *gorm.DB
 }

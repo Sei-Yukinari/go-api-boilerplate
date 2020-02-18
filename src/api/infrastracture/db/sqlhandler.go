@@ -3,148 +3,61 @@ package db
 import (
 	"api/infrastracture/env"
 	"api/interfaces"
-	"database/sql"
 	"fmt"
+
+	"github.com/jinzhu/gorm"
 )
 
-// A SQLHandler belong to the infrastructure layer.
 type SQLHandler struct {
-	Conn *sql.DB
+	Conn *gorm.DB
 }
 
-// A Tx belong to the infrastructure layer.
-type Tx struct {
-	Tx *sql.Tx
-}
-
-// A Result belong to the infrastructure layer.
-type Result struct {
-	Result sql.Result
-}
-
-// A Row belong to the infrastructure layer.
-type Row struct {
-	Rows *sql.Rows
-}
-
-// NewSQLHandler returns connection and methos which is related to database handling.
 func NewSQLHandler() (interfaces.SQLHandler, error) {
-	sqlHandler := &SQLHandler{}
 	var env = env.Load()
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", env.DbUser, env.DbPassword, env.DbHost, env.DbPort, env.DbDatabase)
-	conn, err := sql.Open(env.DbDriver, dataSourceName)
+	conn, err := gorm.Open(env.DbDriver, dataSourceName)
 	if err != nil {
-		return nil, err
+		panic(err.Error)
 	}
-	err = conn.Ping()
+	err = conn.DB().Ping()
 	if err != nil {
 		fmt.Printf("Can not connection DB : %s", err)
 		fmt.Printf("dataSourceName : %s", dataSourceName)
 		return nil, err
 	}
+	sqlHandler := new(SQLHandler)
 	sqlHandler.Conn = conn
-
 	return sqlHandler, nil
 }
 
-// Begin is begin transaction
-func (s *SQLHandler) Begin() (interfaces.Tx, error) {
-	t, err := s.Conn.Begin()
-
-	if err != nil {
-		return nil, err
-	}
-
-	tx := &Tx{}
-	tx.Tx = t
-
-	return tx, nil
+func (handler *SQLHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.Conn.Find(out, where...)
 }
 
-// Query returns results of a Query method.
-func (s *SQLHandler) Query(query string, args ...interface{}) (interfaces.Row, error) {
-	rows, err := s.Conn.Query(query, args...)
-
-	if err != nil {
-		return nil, err
-	}
-
-	row := &Row{}
-	row.Rows = rows
-
-	return row, nil
+func (handler *SQLHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+	return handler.Conn.Exec(sql, values...)
 }
 
-// Exec is execute statement
-func (s *SQLHandler) Exec(query string, args ...interface{}) (interfaces.Result, error) {
-	result, err := s.Conn.Exec(query, args...)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
+func (handler *SQLHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.Conn.First(out, where...)
 }
 
-// Commit is commit transaction
-func (t Tx) Commit() error {
-	err := t.Tx.Commit()
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (handler *SQLHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+	return handler.Conn.Raw(sql, values...)
 }
 
-// Rollback is rollback transaction
-func (t Tx) Rollback() error {
-	err := t.Tx.Rollback()
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (handler *SQLHandler) Create(value interface{}) *gorm.DB {
+	return handler.Conn.Create(value)
 }
 
-// Exec is execute statement with transaction
-func (t Tx) Exec(query string, args ...interface{}) (interfaces.Result, error) {
-	result, err := t.Tx.Exec(query, args...)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
+func (handler *SQLHandler) Save(value interface{}) *gorm.DB {
+	return handler.Conn.Save(value)
 }
 
-// LastInsertId returns results of a LastInsertId method.
-func (r Result) LastInsertId() (int64, error) {
-	return r.Result.LastInsertId()
+func (handler *SQLHandler) Delete(value interface{}) *gorm.DB {
+	return handler.Conn.Delete(value)
 }
 
-// RowsAffected returns results of a RowsAffected method.
-func (r Result) RowsAffected() (int64, error) {
-	return r.Result.RowsAffected()
-}
-
-// Scan returns results of a Scan method.
-func (r Row) Scan(value ...interface{}) error {
-	return r.Rows.Scan(value...)
-}
-
-// Next returns results of a Next method.
-func (r Row) Next() bool {
-	return r.Rows.Next()
-}
-
-// Close returns results of a Close method.
-func (r Row) Close() error {
-	return r.Rows.Close()
-}
-
-// Err returns results of a Err method.
-func (r Row) Err() error {
-	return r.Rows.Err()
+func (handler *SQLHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+	return handler.Conn.Where(query, args...)
 }

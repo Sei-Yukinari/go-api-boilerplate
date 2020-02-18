@@ -33,7 +33,7 @@ func (uc *Controller) Index(c interfaces.Context) {
 	c.Bind(&u)
 	users, err := uc.UserInteractor.Index()
 	if err != nil {
-		c.JSON(500, interfaces.NewError(err))
+		c.JSON(500, err)
 		return
 	}
 	c.JSON(200, users)
