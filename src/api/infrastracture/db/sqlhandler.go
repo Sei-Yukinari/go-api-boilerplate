@@ -15,6 +15,7 @@ type SQLHandler struct {
 func NewSQLHandler() (interfaces.SQLHandler, error) {
 	var env = env.Load()
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", env.DbUser, env.DbPassword, env.DbHost, env.DbPort, env.DbDatabase)
+	fmt.Printf("dataSourceName : %s", dataSourceName)
 	conn, err := gorm.Open(env.DbDriver, dataSourceName)
 	if err != nil {
 		panic(err.Error)
@@ -22,7 +23,6 @@ func NewSQLHandler() (interfaces.SQLHandler, error) {
 	err = conn.DB().Ping()
 	if err != nil {
 		fmt.Printf("Can not connection DB : %s", err)
-		fmt.Printf("dataSourceName : %s", dataSourceName)
 		return nil, err
 	}
 	sqlHandler := new(SQLHandler)

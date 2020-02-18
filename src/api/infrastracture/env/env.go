@@ -10,8 +10,8 @@ type Env struct {
 	DbDriver   string `env:"DB_DRIVER" envDefault:"mysql"`
 	DbUser     string `env:"DB_USER" envDefault:"user"`
 	DbPassword string `env:"DB_PASSWORD" envDefault:"password"`
-	DbHost     string `env:"DB_HOST" envDefault:"db"`
-	DbPort     string `env:"DB_PORT" envDefault:"3306"`
+	DbHost     string `env:"DB_HOST" envDefault:"localhost"`
+	DbPort     string `env:"DB_PORT" envDefault:"3314"`
 	DbDatabase string `env:"DB_DATABASE" envDefault:"sample_db"`
 }
 
